@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.layout')
 
 @section('content')
 
@@ -18,11 +18,7 @@
 				     alt="First slide">
 				<div class="container">
 					<div class="carousel-caption">
-						<h1>Example headline.</h1>
-						<p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous"
-							Glyphicon buttons on the left and right might not load/display properly due to web browser
-							security rules.</p>
-						<p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+						<h1 style="margin-bottom: 160px;">Welcome {{ Auth::user()->name }}!</h1>
 					</div>
 				</div>
 			</div>
