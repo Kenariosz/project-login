@@ -45,6 +45,6 @@ class User extends Authenticatable {
 	 */
 	public function isActive()
 	{
-		return (bool) $this->active;
+		return (bool)$this->active;
 	}
 }

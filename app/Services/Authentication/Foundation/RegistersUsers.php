@@ -42,6 +42,13 @@ trait RegistersUsers {
 		return redirect($this->redirectPath());
 	}
 
+	public function activeUser($activationToken)
+	{
+		$this->activate($activationToken);
+
+		return redirect($this->redirectPath());
+	}
+
 	/**
 	 * Get the guard to be used during registration.
 	 *

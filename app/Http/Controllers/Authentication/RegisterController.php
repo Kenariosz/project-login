@@ -83,4 +83,23 @@ class RegisterController extends Controller {
 
 		return $user;
 	}
+
+	/**
+	 * Activate the user.
+	 *
+	 * @param $activationToken
+	 *
+	 * @return mixed
+	 */
+	protected function activate($activationToken)
+	{
+		$user = User::whereActivationToken($activationToken)->firstOrFail();
+		$user->active = 1;
+		$user->activation_token = null;
+		$user->save();
+
+		flash()->success('Success!', 'Your activation was successful.');
+
+		return $user;
+	}
 }
