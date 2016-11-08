@@ -4,6 +4,10 @@ namespace App\Services\Authentication\Contracts;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 
+/**
+ * Interface Guard
+ * @package App\Services\Authentication\Contracts
+ */
 interface Guard {
 
 	/**
@@ -37,12 +41,12 @@ interface Guard {
 	/**
 	 * Validate a user's credentials.
 	 *
-	 * @param \Illuminate\Contracts\Auth\Authenticatable $user
-	 * @param  array                                     $credentials
+	 * @param        $user
+	 * @param  array $credentials
 	 *
 	 * @return bool
 	 */
-	public function validate(Authenticatable $user, array $credentials = []);
+	public function validate($user, array $credentials = []);
 
 	/**
 	 * Set the current user.

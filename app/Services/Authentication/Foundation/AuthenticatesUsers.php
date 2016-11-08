@@ -3,13 +3,18 @@
 namespace APP\Services\Authentication\Foundation;
 
 use App\Services\Authentication\Foundation\RedirectsUsers;
+use App\Services\Authentication\Foundation\KeSecurity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 
+/**
+ * Class AuthenticatesUsers
+ * @package APP\Services\Authentication\Foundation
+ */
 trait AuthenticatesUsers {
 
-	use RedirectsUsers;
+	use RedirectsUsers, KeSecurity;
 
 	/**
 	 * Show the application's login form.
@@ -31,17 +36,25 @@ trait AuthenticatesUsers {
 	public function login(Request $request)
 	{
 		$this->validateLogin($request);
-
-		// TODO: Check login attempts
-
+		// Count login attempts
+		if($this->hasTooManyLoginAttempts($request))
+		{
+			session(['hasCaptcha' => true]);
+		}
+		else
+		{
+			session(['hasCaptcha' => false]);
+		}
+		// Try to login
 		$credentials = $this->credentials($request);
-
 		if($this->guard()->attempt($credentials, $request->has('remember')))
 		{
 			return $this->sendLoginResponse($request);
 		}
-
-		// TODO: Insrement login attempts
+		// Remove old login attempts
+		$this->clearLoginAttempt();
+		// Increase login attempts
+		$this->addLoginAttempts($request);
 
 		return $this->sendFailedLoginResponse($request);
 	}
@@ -82,8 +95,6 @@ trait AuthenticatesUsers {
 	protected function sendLoginResponse(Request $request)
 	{
 		$request->session()->regenerate();
-
-		// TODO: clearLoginAttempts
 
 		return $this->authenticated($request, $this->guard()->user())
 			?: redirect()->intended($this->redirectPath());

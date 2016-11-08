@@ -6,6 +6,10 @@ use App\User;
 use App\Mail\Authentication\Activation;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * Class ActivationUsers
+ * @package App\Services\Authentication\Foundation
+ */
 trait ActivationUsers {
 
 	/**

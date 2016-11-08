@@ -4,6 +4,10 @@ namespace App\Services\Authentication;
 
 use Exception;
 
+/**
+ * Class KeAuthenticationException
+ * @package App\Services\Authentication
+ */
 class KeAuthenticationException extends Exception {
 
 	/**

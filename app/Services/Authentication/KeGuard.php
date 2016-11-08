@@ -3,6 +3,7 @@
 namespace App\Services\Authentication;
 
 use App\Services\Authentication\Contracts\Guard;
+use App\Services\Authentication\Foundation\Captcha;
 use Illuminate\Contracts\Auth\Authenticatable;
 use RuntimeException;
 use Illuminate\Support\Str;
@@ -11,9 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class KeGuard
+ * @package App\Services\Authentication
+ */
 class KeGuard implements Guard {
 
-	use GuardHelpers;
+	use GuardHelpers, Captcha;
 
 	/**
 	 * The name of the Guard. Typically "session".
@@ -59,7 +64,7 @@ class KeGuard implements Guard {
 	{
 		if($this->loggedOut)
 		{
-			return;
+			return null;
 		}
 		// If we've already retrieved the user for the current request
 		if(!is_null($this->user))
@@ -156,11 +161,6 @@ class KeGuard implements Guard {
 			$this->refreshRememberToken($user);
 		}
 
-		if(isset($this->events))
-		{
-			$this->events->fire(new Events\Logout($user));
-		}
-
 		$this->user = null;
 		$this->loggedOut = true;
 	}
@@ -206,7 +206,7 @@ class KeGuard implements Guard {
 	 *
 	 * @return bool
 	 */
-	public function validate(Authenticatable $user, array $credentials = [])
+	public function validate($user, array $credentials = [])
 	{
 		return !is_null($user) && $user->isActive() && $this->provider->validateCredentials($user, $credentials);
 	}
@@ -386,4 +386,5 @@ class KeGuard implements Guard {
 	{
 		$this->provider = $provider;
 	}
+
 }

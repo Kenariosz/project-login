@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 
+/**
+ * Class RegistersUsers
+ * @package App\Services\Authentication\Foundation
+ */
 trait RegistersUsers {
 
 	use RedirectsUsers, ActivationUsers;

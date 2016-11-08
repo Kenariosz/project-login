@@ -1,7 +1,10 @@
 <?php
 
 namespace APP\Services\Authentication\Foundation;
-
+/**
+ * Class RedirectsUsers
+ * @package APP\Services\Authentication\Foundation
+ */
 trait RedirectsUsers
 {
     /**
