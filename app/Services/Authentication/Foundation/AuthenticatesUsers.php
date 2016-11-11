@@ -4,6 +4,7 @@ namespace APP\Services\Authentication\Foundation;
 
 use App\Services\Authentication\Foundation\RedirectsUsers;
 use App\Services\Authentication\Foundation\KeSecurity;
+use App\Services\Authentication\Foundation\Captcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Lang;
  */
 trait AuthenticatesUsers {
 
-	use RedirectsUsers, KeSecurity;
+	use RedirectsUsers, KeSecurity, Captcha;
 
 	/**
 	 * Show the application's login form.
@@ -36,15 +37,7 @@ trait AuthenticatesUsers {
 	public function login(Request $request)
 	{
 		$this->validateLogin($request);
-		// Count login attempts
-		if($this->hasTooManyLoginAttempts($request))
-		{
-			session(['hasCaptcha' => true]);
-		}
-		else
-		{
-			session(['hasCaptcha' => false]);
-		}
+
 		// Try to login
 		$credentials = $this->credentials($request);
 		if($this->guard()->attempt($credentials, $request->has('remember')))
@@ -55,6 +48,15 @@ trait AuthenticatesUsers {
 		$this->clearLoginAttempt();
 		// Increase login attempts
 		$this->addLoginAttempts($request);
+		// Check Count login attempts
+		if($this->hasTooManyLoginAttempts($request))
+		{
+			session(['hasCaptcha' => true]);
+		}
+		else
+		{
+			session(['hasCaptcha' => false]);
+		}
 
 		return $this->sendFailedLoginResponse($request);
 	}
@@ -68,9 +70,17 @@ trait AuthenticatesUsers {
 	 */
 	protected function validateLogin(Request $request)
 	{
-		$this->validate($request, [
-			$this->username() => 'required', 'password' => 'required',
-		]);
+		if($this->showCaptcha())
+		{
+			$this->validateCaptcha($request);
+		}
+		else
+		{
+			$this->validate($request, [
+				$this->username() => 'required',
+				'password'        => 'required',
+			]);
+		}
 	}
 
 	/**

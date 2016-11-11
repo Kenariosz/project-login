@@ -166,8 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-
-        //
+	    Marwelln\Recaptcha\RecaptchaServiceProvider::class,
 
         /*
          * Application Service Providers...

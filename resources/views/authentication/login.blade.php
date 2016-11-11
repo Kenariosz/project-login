@@ -39,12 +39,6 @@
 								</div>
 							</div>
 
-							@if (Auth::showCaptcha())
-								<div class="form-group">
-									<label for="password" class="col-md-4 control-label">Show Captcha</label>
-								</div>
-							@endif
-
 							<div class="form-group">
 								<div class="col-md-6 col-md-offset-4">
 									<div class="checkbox">
@@ -54,6 +48,17 @@
 									</div>
 								</div>
 							</div>
+
+							@if (Auth::showCaptcha())
+								<div class="form-group {{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+									<div class="col-md-6 col-sm-offset-4">
+										{!! View::make('recaptcha::display') !!}
+									</div>
+									@if ($errors->has('g-recaptcha-response'))
+										<span class="help-block col-md-6 col-sm-offset-4"><strong>{{ $errors->first('g-recaptcha-response') }}</strong></span>
+									@endif
+								</div>
+							@endif
 
 							<div class="form-group">
 								<div class="col-md-8 col-md-offset-4">
