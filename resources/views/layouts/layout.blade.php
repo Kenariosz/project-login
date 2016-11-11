@@ -30,8 +30,7 @@
 			@if (Auth::check())
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/">Home</a></li>
-				<li><a href="/page">Page</a></li>
-				<li><a href="/contact">Contact</a></li>
+				<li><a href="/login-attempts">Login attempts</a></li>
 			</ul>
 			@endif
 			<!-- Right Side Of Navbar -->

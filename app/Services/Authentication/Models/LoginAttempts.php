@@ -24,28 +24,28 @@ class LoginAttempts extends Model {
 	 *
 	 * @var int
 	 */
-	protected $max_login_attempts = 3;
+	protected $maxLoginAttempts = 3;
 
 	/**
 	 * Max login attempts for netmask 24 bit
 	 *
 	 * @var int
 	 */
-	protected $max_login_attempts_ip_24 = 500;
+	protected $maxLoginAttemptsIp24 = 500;
 
 	/**
 	 * Max login attempts for netmask 16 bit
 	 *
 	 * @var int
 	 */
-	protected $max_login_attempts_ip_16 = 1000;
+	protected $maxLoginAttemptsIp16 = 1000;
 
 	/**
 	 * The number of SECONDS you want to delete login attempts from DB.
 	 *
 	 * @var int
 	 */
-	protected $login_attempts_expiration = 3600;
+	protected $loginAttemptsExpiration = 3600;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -67,7 +67,7 @@ class LoginAttempts extends Model {
 	{
 		$loginAttempt = new static;
 
-		return LoginAttempts::where('type', '=', 'user')->where('username', '=', $request->email)->where('created_at', '>', date('Y-m-d H:i:s', (time() - $loginAttempt->login_attempts_expiration)))->count() >= $loginAttempt->max_login_attempts;
+		return LoginAttempts::where('type', '=', 'user')->where('username', '=', $request->email)->where('created_at', '>', date('Y-m-d H:i:s', (time() - $loginAttempt->loginAttemptsExpiration)))->count() >= $loginAttempt->maxLoginAttempts;
 	}
 
 	/**
@@ -81,7 +81,7 @@ class LoginAttempts extends Model {
 	{
 		$loginAttempt = new static;
 
-		return LoginAttempts::where('type', '=', 'ip_address')->where('ip_address', '=', $request->ip())->where('created_at', '>', date('Y-m-d H:i:s', (time() - $loginAttempt->login_attempts_expiration)))->count() >= $loginAttempt->max_login_attempts;
+		return LoginAttempts::where('type', '=', 'ip_address')->where('ip_address', '=', $request->ip())->where('created_at', '>', date('Y-m-d H:i:s', (time() - $loginAttempt->loginAttemptsExpiration)))->count() >= $loginAttempt->maxLoginAttempts;
 	}
 
 	/**
@@ -95,7 +95,7 @@ class LoginAttempts extends Model {
 	{
 		$loginAttempt = new static;
 
-		return LoginAttempts::where('type', '=', 'ip_16')->where('ip_16', '=', IPAddress::getCIDR($request->ip() . '/16'))->where('created_at', '>', date('Y-m-d H:i:s', (time() - $loginAttempt->login_attempts_expiration)))->count() >= $loginAttempt->max_login_attempts_ip_16;
+		return LoginAttempts::where('type', '=', 'ip_16')->where('ip_16', '=', IPAddress::getCIDR($request->ip() . '/16'))->where('created_at', '>', date('Y-m-d H:i:s', (time() - $loginAttempt->loginAttemptsExpiration)))->count() >= $loginAttempt->maxLoginAttemptsIp16;
 	}
 
 	/**
@@ -109,7 +109,7 @@ class LoginAttempts extends Model {
 	{
 		$loginAttempt = new static;
 
-		return LoginAttempts::where('type', '=', 'ip_24')->where('ip_24', '=', IPAddress::getCIDR($request->ip() . '/24'))->where('created_at', '>', date('Y-m-d H:i:s', (time() - $loginAttempt->login_attempts_expiration)))->count() >= $loginAttempt->max_login_attempts_ip_24;
+		return LoginAttempts::where('type', '=', 'ip_24')->where('ip_24', '=', IPAddress::getCIDR($request->ip() . '/24'))->where('created_at', '>', date('Y-m-d H:i:s', (time() - $loginAttempt->loginAttemptsExpiration)))->count() >= $loginAttempt->maxLoginAttemptsIp24;
 	}
 
 	/**
@@ -140,6 +140,6 @@ class LoginAttempts extends Model {
 	{
 		$loginAttempt = new static;
 
-		LoginAttempts::where('created_at', '<=', date('Y-m-d H:i:s', (time() - $loginAttempt->login_attempts_expiration)))->delete();
+		LoginAttempts::where('created_at', '<=', date('Y-m-d H:i:s', (time() - $loginAttempt->loginAttemptsExpiration)))->delete();
 	}
 }

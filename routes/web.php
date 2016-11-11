@@ -3,8 +3,7 @@
 // Home Routes
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index');
-Route::get('/page', 'HomeController@page');
-Route::get('/contact', 'HomeController@contact');
+Route::get('/login-attempts', 'HomeController@listSummarisedLA');
 
 // Authentication Routes...
 $this->get('login', 'Authentication\LoginController@showLoginForm')->name('login');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Authentication\Models\LoginAttempts;
+use App\Services\Authentication\Models\SummarisedLoginAttempt;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller {
@@ -26,13 +28,17 @@ class HomeController extends Controller {
 		return view('pages.home');
 	}
 
-	public function page()
+	/**
+	 * Show summarised login attempts
+	 *
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function listSummarisedLA()
 	{
-		return view('pages.page');
+		SummarisedLoginAttempt::summariseLoginAttempts();
+		$loginAttempts = SummarisedLoginAttempt::getSummarised();
+
+		return view('pages.listSummarisedLA', compact('loginAttempts'));
 	}
 
-	public function contact()
-	{
-		return view('pages.contact');
-	}
 }

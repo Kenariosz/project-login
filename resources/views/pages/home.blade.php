@@ -18,7 +18,12 @@
 				     alt="First slide">
 				<div class="container">
 					<div class="carousel-caption">
-						<h1 style="margin-bottom: 160px;">Welcome {{ Auth::user()->name }}!</h1>
+						<h1 style="margin-bottom: 160px;">Welcome {{ Auth::user()->name }}!<br>
+							<br>
+							<small style="color: white;">
+								Check sumamrised <a href="/login-attempts">Login attempts</a>.
+							</small>
+						</h1>
 					</div>
 				</div>
 			</div>

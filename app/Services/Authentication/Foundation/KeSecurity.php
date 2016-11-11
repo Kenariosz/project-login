@@ -3,6 +3,7 @@
 namespace App\Services\Authentication\Foundation;
 
 use App\Services\Authentication\Models\LoginAttempts;
+use App\Services\Authentication\Models\SummarisedLoginAttempt;
 use Illuminate\Http\Request;
 
 /**
@@ -10,6 +11,11 @@ use Illuminate\Http\Request;
  * @package App\Services\Authentication\Foundation
  */
 trait KeSecurity {
+
+	public function sumLoginAttempts()
+	{
+		SummarisedLoginAttempt::summariseLoginAttempts();
+	}
 
 	/**
 	 * Increase login attempts.
