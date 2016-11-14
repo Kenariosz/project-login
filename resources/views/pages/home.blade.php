@@ -21,7 +21,7 @@
 						<h1 style="margin-bottom: 160px;">Welcome {{ Auth::user()->name }}!<br>
 							<br>
 							<small style="color: white;">
-								Check sumamrised <a href="/login-attempts">Login attempts</a>.
+								Check sumamrised <a href="{{ url('/login-attempts') }}">Login attempts</a>.
 							</small>
 						</h1>
 					</div>
